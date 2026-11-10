@@ -1,1 +1,287 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATOM BOMB | Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+:root{--gold:#e5bd62;--bg:#101010;--panel:#1b1b1b;--muted:#929292}
+body{margin:0;background:var(--bg);color:#fff;font-family:'Hind Siliguri',sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:245px;background:#171717;border-right:1px solid #383020;padding:22px 15px;flex-shrink:0}
+.logo{font-size:22px;font-weight:800;color:var(--gold);padding:8px 10px}
+.logo small{display:block;font-size:11px;color:#aaa;letter-spacing:3px}
+.navtitle{font-size:11px;color:#888;margin:25px 10px 10px}
+.nav button{display:block;width:100%;text-align:left;border:0;background:transparent;color:#aaa;padding:12px;border-radius:11px;margin:4px 0}
+.nav button.active,.nav button:hover{background:#332a19;color:var(--gold)}
+.main{flex:1;min-width:0;padding:25px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:25px}
+.topbar h2{margin:0;font-size:23px}
+.topbar p{color:#999;font-size:12px;margin:3px 0}
+.tag{color:var(--gold);border:1px solid #8e7139;padding:5px 10px;border-radius:20px;font-size:11px}
+.page{display:none}
+.page.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid #373027;border-radius:16px;padding:18px;margin-bottom:15px}
+.metric{color:#999;font-size:13px}
+.value{font-size:27px;font-weight:800;color:var(--gold);margin:8px 0}
+.icon{font-size:22px}
+.section{font-size:18px;color:var(--gold);margin:22px 0 12px}
+.goldbtn{background:linear-gradient(110deg,#ad8132,#f2d78d,#ad8132);color:#17130a;border:0;padding:10px 17px;border-radius:9px;font-weight:800}
+.darkbtn{background:#292929;color:#ddd;border:1px solid #51452e;padding:9px 13px;border-radius:9px}
+.danger{color:#ff7777}
+table{width:100%;border-collapse:collapse;min-width:570px}
+th,td{text-align:left;padding:13px;border-bottom:1px solid #383838;font-size:13px}
+th{color:var(--gold)}
+.tablewrap{overflow-x:auto}
+input,textarea,select{width:100%;padding:12px;background:#111;color:white;border:1px solid #51452e;border-radius:9px;margin:7px 0 14px}
+label{font-size:13px;color:#ccc}
+.status{color:#e5bd62;background:#40331c;padding:4px 9px;border-radius:20px;font-size:11px}
+.notice{border:1px solid #705a2c;color:#e5bd62;background:#292315;padding:12px;border-radius:12px;font-size:12px;line-height:1.7;margin-bottom:17px}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mobilemenu{display:none}
+.modal{display:none;position:fixed;inset:0;background:#000c;z-index:10;align-items:center;justify-content:center;padding:20px}
+.modalbox{width:100%;max-width:420px;background:#202020;border:1px solid #94743a;padding:22px;border-radius:17px}
+@media(max-width:850px){
+ .sidebar{width:190px}
+ .main{padding:16px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+ .layout{display:block}
+ .sidebar{width:100%;padding:10px 12px;border-right:0;border-bottom:1px solid #383020}
+ .logo{font-size:19px;padding:5px}
+ .navtitle{display:none}
+ .nav{display:flex;overflow-x:auto;gap:5px}
+ .nav button{white-space:nowrap;width:auto;font-size:12px;padding:9px}
+ .main{padding:14px}
+ .topbar h2{font-size:20px}
+ .grid{gap:9px}
+ .card{padding:13px}
+ .value{font-size:22px}
+ .formgrid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
 
+<div class="layout">
+
+<aside class="sidebar">
+ <div class="logo">☢ ATOM BOMB<small>CONTROL CENTER</small></div>
+ <div class="navtitle">MAIN MENU</div>
+ <div class="nav">
+  <button class="active" onclick="page('dashboard',this)">📊 Dashboard</button>
+  <button onclick="page('users',this)">👥 Users</button>
+  <button onclick="page('tasks',this)">🎯 Tasks</button>
+  <button onclick="page('withdraw',this)">💳 Withdrawals</button>
+  <button onclick="page('referral',this)">🎁 Referral</button>
+  <button onclick="page('history',this)">📜 History</button>
+  <button onclick="page('notify',this)">📢 Notifications</button>
+  <button onclick="page('settings',this)">⚙ Settings</button>
+ </div>
+</aside>
+
+<main class="main">
+ <div class="topbar">
+  <div>
+   <h2 id="pageTitle">Dashboard</h2>
+   <p>ATOM BOMB Administration</p>
+  </div>
+  <span class="tag">DEMO MODE</span>
+ </div>
+
+ <div class="notice">
+  ⚠️ DEMO PANEL: এখানে দেখানো তথ্য নমুনা। কোনো বাস্তব User, Balance বা Payment পরিবর্তন হচ্ছে না। Backend যুক্ত না হওয়া পর্যন্ত এই পেজে আসল ব্যবহারকারীর তথ্য রাখবে না।
+ </div>
+
+ <!-- DASHBOARD -->
+ <section id="dashboard" class="page active">
+  <div class="grid">
+   <div class="card"><div class="icon">👥</div><div class="metric">Total Users</div><div class="value">0</div></div>
+   <div class="card"><div class="icon">🎯</div><div class="metric">Total Tasks</div><div class="value">0</div></div>
+   <div class="card"><div class="icon">💰</div><div class="metric">Total Rewards</div><div class="value">৳0</div></div>
+   <div class="card"><div class="icon">💳</div><div class="metric">Pending Requests</div><div class="value">0</div></div>
+  </div>
+  <h3 class="section">⚡ Quick Actions</h3>
+  <div class="grid">
+   <button class="card darkbtn" onclick="page('tasks')">➕ Create Task</button>
+   <button class="card darkbtn" onclick="page('users')">👥 View Users</button>
+   <button class="card darkbtn" onclick="page('withdraw')">💳 View Withdrawals</button>
+   <button class="card darkbtn" onclick="page('notify')">📢 Announcement</button>
+  </div>
+  <h3 class="section">System Overview</h3>
+  <div class="card">
+   <p>Platform: <b style="color:var(--gold)">ATOM BOMB</b></p>
+   <p>Admin Interface: <span class="status">Demo Only</span></p>
+   <p>Database: Not Connected</p>
+   <p>Payment Gateway: Not Connected</p>
+  </div>
+ </section>
+
+ <!-- USERS -->
+ <section id="users" class="page">
+  <h3 class="section">👥 User Management</h3>
+  <input id="userSearch" placeholder="Search demo user..." oninput="searchUsers()">
+  <div class="card tablewrap">
+   <table><thead><tr><th>ID</th><th>Username</th><th>Balance</th><th>Status</th></tr></thead>
+   <tbody id="userRows">
+    <tr><td colspan="4">No real users loaded. Connect database first.</td></tr>
+   </tbody></table>
+  </div>
+ </section>
+
+ <!-- TASKS -->
+ <section id="tasks" class="page">
+  <h3 class="section">🎯 Task Management</h3>
+  <div class="card">
+   <label>Task Title</label>
+   <input id="taskName" placeholder="Example: Telegram Group Join">
+   <label>Task Description</label>
+   <textarea id="taskDesc" placeholder="Write task instructions"></textarea>
+   <div class="formgrid">
+    <div><label>Reward (BDT)</label><input id="taskReward" type="number" min="0" placeholder="0"></div>
+    <div><label>Task Category</label>
+     <select id="taskCategory"><option>Telegram</option><option>Social</option><option>Micro Task</option></select>
+    </div>
+   </div>
+   <label>Task Link</label>
+   <input id="taskLink" type="url" placeholder="https://t.me/...">
+   <button class="goldbtn" onclick="addTask()">➕ Add Demo Task</button>
+  </div>
+  <div class="card">
+   <h3>Created Demo Tasks</h3>
+   <div id="taskList">No demo tasks created.</div>
+  </div>
+ </section>
+
+ <!-- WITHDRAWALS -->
+ <section id="withdraw" class="page">
+  <h3 class="section">💳 Withdrawal Management</h3>
+  <div class="card">
+   <p>Pending requests: <b style="color:var(--gold)">0</b></p>
+   <p>Payment methods: bKash / Nagad / Rocket</p>
+   <p style="color:#999">Live requests require authenticated database connection.</p>
+  </div>
+  <div class="card tablewrap">
+   <table><thead><tr><th>Request ID</th><th>User</th><th>Amount</th><th>Status</th></tr></thead>
+   <tbody><tr><td colspan="4">No real withdrawal requests available.</td></tr></tbody></table>
+  </div>
+ </section>
+
+ <!-- REFERRAL -->
+ <section id="referral" class="page">
+  <h3 class="section">🎁 Referral Settings</h3>
+  <div class="card">
+   <label>Referral Bonus (BDT)</label>
+   <input id="refBonus" type="number" min="0" placeholder="0">
+   <label>Referral Rules</label>
+   <textarea id="refRules" placeholder="Describe eligible referral conditions"></textarea>
+   <button class="goldbtn" onclick="demoSave('Referral settings')">Save Demo Settings</button>
+  </div>
+ </section>
+
+ <!-- HISTORY -->
+ <section id="history" class="page">
+  <h3 class="section">📜 Activity History</h3>
+  <div class="card">No real activity history. Database connection required.</div>
+ </section>
+
+ <!-- NOTIFICATIONS -->
+ <section id="notify" class="page">
+  <h3 class="section">📢 Notifications</h3>
+  <div class="card">
+   <label>Announcement Title</label>
+   <input id="noticeTitle" placeholder="Announcement title">
+   <label>Message</label>
+   <textarea id="noticeMessage" placeholder="Write your announcement"></textarea>
+   <button class="goldbtn" onclick="demoSave('Announcement')">Preview Announcement</button>
+   <p style="color:#999;font-size:12px">এটি শুধু Demo Preview। Telegram Broadcast-এর জন্য Bot Backend প্রয়োজন।</p>
+  </div>
+ </section>
+
+ <!-- SETTINGS -->
+ <section id="settings" class="page">
+  <h3 class="section">⚙ App Settings</h3>
+  <div class="card">
+   <label>Platform Name</label>
+   <input value="ATOM BOMB" disabled>
+   <label>Minimum Withdrawal (BDT)</label>
+   <input type="number" value="50" disabled>
+   <label>Support Username</label>
+   <input placeholder="@YourSupport" disabled>
+   <button class="darkbtn" onclick="demoSave('App settings')">Settings Preview</button>
+  </div>
+  <div class="notice">সেটিংস বাস্তবে কার্যকর করতে Admin Authentication ও Backend Permissions প্রয়োজন।</div>
+ </section>
+</main>
+</div>
+
+<div class="modal" id="previewModal">
+ <div class="modalbox">
+  <h3 style="color:var(--gold)">ATOM BOMB</h3>
+  <div id="previewText"></div>
+  <button class="goldbtn" onclick="closePreview()">Close</button>
+ </div>
+</div>
+
+<script>
+function page(id,btn){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+ if(btn)btn.classList.add('active');
+ const names={
+ dashboard:'Dashboard',users:'User Management',
+ tasks:'Task Management',withdraw:'Withdrawals',
+ referral:'Referral Settings',history:'Activity History',
+ notify:'Notifications',settings:'App Settings'
+ };
+ document.getElementById('pageTitle').textContent=names[id];
+ window.scrollTo(0,0);
+}
+function demoSave(name){
+ document.getElementById('previewText').textContent=
+ name+' is only a demo. No real data was changed.';
+ document.getElementById('previewModal').style.display='flex';
+}
+function closePreview(){
+ document.getElementById('previewModal').style.display='none';
+}
+function addTask(){
+ const name=document.getElementById('taskName').value.trim();
+ const desc=document.getElementById('taskDesc').value.trim();
+ const reward=document.getElementById('taskReward').value;
+ const category=document.getElementById('taskCategory').value;
+ const link=document.getElementById('taskLink').value.trim();
+ if(!name||!desc||reward===''||Number(reward)<0){
+  alert('সব তথ্য সঠিকভাবে পূরণ করো।');return;
+ }
+ const item=document.createElement('div');
+ item.style.cssText='border-bottom:1px solid #444;padding:12px 0';
+ const title=document.createElement('b');
+ title.style.color='#e5bd62';
+ title.textContent=name;
+ const details=document.createElement('p');
+ details.textContent=category+' | ৳'+reward+' | '+desc;
+ const linkText=document.createElement('small');
+ linkText.textContent=link;
+ item.append(title,details,linkText);
+ document.getElementById('taskList').appendChild(item);
+ document.getElementById('taskName').value='';
+ document.getElementById('taskDesc').value='';
+ document.getElementById('taskReward').value='';
+ document.getElementById('taskLink').value='';
+ alert('Demo task added in this page only.');
+}
+function searchUsers(){
+ document.getElementById('userRows').innerHTML=
+ '<tr><td colspan="4">Real user search requires database connection.</td></tr>';
+}
+</script>
+</body>
+   </html>
