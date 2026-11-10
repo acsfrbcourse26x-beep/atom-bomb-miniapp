@@ -1,56 +1,495 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ATOM BOMB</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 *{box-sizing:border-box}
-body{background:#080808;color:white;font-family:Arial;padding:20px}
-header{text-align:center;color:#f5c542;padding:20px}
-h1{font-size:30px}
-.card{background:#191919;border:1px solid #b58a30;border-radius:18px;padding:20px;margin:15px 0}
-.gold{color:#f5c542;font-size:28px;font-weight:bold}
-button{background:#e7bb49;color:#111;border:0;padding:15px;width:100%;border-radius:12px;font-weight:bold}
-p{color:#aaa}
+body{
+ margin:0;
+ font-family:'Hind Siliguri',sans-serif;
+ background:linear-gradient(145deg,#dcecff,#f4f2ff,#e4fbff);
+ color:#18243b;
+ padding:16px 15px 105px;
+}
+button{font-family:inherit;cursor:pointer}
+.top{
+ display:flex;align-items:center;justify-content:space-between;
+ margin:5px 0 22px;
+}
+.user{display:flex;align-items:center;gap:11px}
+.avatar{
+ width:51px;height:51px;border-radius:50%;
+ background:linear-gradient(135deg,#23c7df,#8050ef);
+ display:grid;place-items:center;
+ color:white;font-size:23px;
+ border:3px solid white;
+}
+.name{font-size:17px;font-weight:800}
+.handle{font-size:12px;color:#8491a5}
+.topbtn{
+ border:0;background:white;width:43px;height:43px;
+ border-radius:14px;color:#69768c;font-size:19px;
+ box-shadow:0 5px 15px #9eafc633;margin-left:5px;
+}
+.card{
+ background:rgba(255,255,255,.93);
+ border-radius:25px;padding:19px;
+ box-shadow:0 12px 30px #607d9a18;
+ margin-bottom:16px;
+}
+.balance{
+ color:white;
+ background:linear-gradient(120deg,#7438eb,#7650f5,#13bce0);
+ padding:24px;border-radius:27px;
+ box-shadow:0 13px 28px #7955e755;
+}
+.balance-title{font-size:14px;opacity:.9}
+.amount{font-size:43px;font-weight:800;margin:8px 0}
+.stats{
+ display:grid;grid-template-columns:repeat(3,1fr);
+ border-top:1px solid #ffffff50;
+ padding-top:15px;margin-top:15px;
+}
+.stat strong{font-size:19px;display:block}
+.stat span{font-size:12px;opacity:.8}
+.section-title{
+ font-size:19px;font-weight:800;margin:23px 2px 13px;
+}
+.quick{
+ display:grid;grid-template-columns:1fr 1fr;gap:12px;
+}
+.quick-card{
+ background:white;border-radius:23px;padding:19px 10px;
+ text-align:center;box-shadow:0 7px 22px #7188a51a;
+}
+.iconbox{
+ width:67px;height:67px;margin:auto auto 10px;
+ border-radius:22px;display:grid;place-items:center;
+ font-size:29px;
+}
+.cyan{background:#d8f9f5;color:#20bfae}
+.yellow{background:#fff4d8;color:#e9b52c}
+.purple{background:#eee3ff;color:#9b69ed}
+.blue{background:#dcf7ff;color:#25bdd3}
+.quick-card h3{font-size:16px;margin:4px 0}
+.quick-card p{font-size:12px;color:#929cad;margin:0}
+.adbox{
+ background:linear-gradient(125deg,#e1faff,#e8dcff,#fff3db);
+ border-radius:25px;padding:19px;
+ box-shadow:0 10px 25px #8b8bba20;
+ margin-top:20px;
+}
+.adhead{display:flex;align-items:center;gap:12px}
+.play{
+ width:58px;height:58px;border-radius:18px;
+ display:grid;place-items:center;
+ background:linear-gradient(135deg,#24c9df,#8353f0);
+ color:white;font-size:25px;
+}
+.adhead strong{font-size:16px}
+.adhead p{font-size:12px;color:#79869a;margin:2px 0}
+.gradient-btn{
+ width:100%;border:0;border-radius:17px;
+ padding:16px;color:#111;
+ background:linear-gradient(100deg,#20c6df,#7755f1,#bd8cf5);
+ font-size:17px;font-weight:800;
+ margin-top:17px;
+ box-shadow:0 7px 17px #7865dc30;
+}
+.progress{
+ height:9px;background:#dfe3eb;
+ border-radius:20px;overflow:hidden;margin-top:8px;
+}
+.progress span{
+ display:block;height:100%;width:0%;
+ background:linear-gradient(90deg,#21c9dc,#8a55ee);
+}
+.page{display:none;animation:fade .25s}
+.page.active{display:block}
+@keyframes fade{
+ from{opacity:0;transform:translateY(8px)}
+ to{opacity:1;transform:translateY(0)}
+}
+.task-tabs{
+ display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;
+}
+.pill{
+ border:0;border-radius:30px;padding:11px 17px;
+ background:white;color:#6c7890;font-weight:700;
+ white-space:nowrap;
+}
+.pill.active{
+ background:linear-gradient(100deg,#22c5e0,#8050ef);
+ color:white;
+}
+.task-card{
+ background:white;padding:16px;border-radius:21px;
+ margin-bottom:13px;box-shadow:0 7px 20px #70809b17;
+ border-left:4px solid #35c8dc;
+}
+.task-top{display:flex;gap:12px;align-items:center}
+.task-logo{
+ width:49px;height:49px;border-radius:15px;
+ background:#e5f7ff;display:grid;place-items:center;
+ font-size:24px;
+}
+.task-card h3{font-size:15px;margin:0}
+.task-card p{font-size:12px;color:#8590a1;margin:3px 0}
+.reward{color:#27bda7;font-weight:800}
+.task-actions{display:flex;justify-content:space-between;gap:8px;margin-top:13px}
+.join,.bonus{
+ padding:11px 15px;border-radius:13px;
+ font-weight:700;border:1px solid #e0e6ef;
+ background:#f5f8ff;color:#27364e;
+}
+.bonus{
+ background:linear-gradient(100deg,#24c9dd,#8354ed);
+ color:white;border:0;
+}
+.ref-hero{
+ background:linear-gradient(120deg,#7438eb,#13bce0);
+ color:white;text-align:center;padding:25px;
+ border-radius:26px;
+}
+.ref-number{font-size:43px;font-weight:800}
+.ref-link{
+ background:white;color:#28364d;padding:12px;
+ border-radius:13px;margin-top:17px;
+ font-size:11px;word-break:break-all;
+}
+.wallet-step{
+ background:white;border-radius:25px;padding:19px;
+}
+.methods{
+ display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+}
+.method{
+ background:#f3f7ff;border:2px solid #e1e7f1;
+ border-radius:15px;padding:15px 5px;
+ text-align:center;font-weight:700;
+}
+.method.selected{border-color:#36c3df;background:#e9faff}
+input{
+ width:100%;padding:15px;border:1px solid #dce4ef;
+ border-radius:13px;margin:8px 0;
+ font-family:inherit;font-size:15px;
+}
+.profile-hero{
+ text-align:center;padding:28px;
+ border-radius:25px;
+ background:linear-gradient(120deg,#7742e9,#20c3df);
+ color:white;
+}
+.big-avatar{
+ width:100px;height:100px;border-radius:50%;
+ background:#ffffff35;border:4px solid white;
+ display:grid;place-items:center;font-size:40px;
+ margin:auto auto 12px;
+}
+.info{
+ background:white;padding:15px;border-radius:16px;
+ margin-top:10px;display:flex;justify-content:space-between;
+}
+.bottom{
+ position:fixed;bottom:10px;left:15px;right:15px;
+ display:flex;justify-content:space-around;
+ background:#ffffffed;backdrop-filter:blur(15px);
+ border-radius:24px;padding:11px 3px;
+ box-shadow:0 8px 30px #68799b35;
+ z-index:10;
+}
+.bottom button{
+ border:0;background:none;color:#929db0;
+ font-size:11px;font-weight:700;min-width:48px;
+}
+.bottom button b{display:block;font-size:22px}
+.bottom button.active{color:#20bfd2}
+.modal{
+ position:fixed;inset:0;background:#111827e8;
+ display:flex;align-items:center;justify-content:center;
+ padding:22px;z-index:20;
+}
+.modal-content{
+ background:white;border-radius:28px;
+ padding:25px;width:100%;max-width:450px;
+ text-align:center;
+}
+.modal-icon{
+ background:linear-gradient(135deg,#ffc34a,#a35ce9);
+ width:85px;height:85px;border-radius:27px;
+ display:grid;place-items:center;
+ margin:auto;font-size:35px;
+}
+.modal-content p{color:#7c8799;text-align:left;line-height:1.9}
 </style>
 </head>
+
 <body>
-<header>
-<h1>☢ ATOM BOMB</h1>
-<p>PREMIUM REWARD PLATFORM</p>
+
+<!-- TOP PROFILE -->
+<header class="top">
+ <div class="user">
+  <div class="avatar">☢</div>
+  <div>
+   <div class="name" id="topName">ATOM BOMB User</div>
+   <div class="handle" id="topHandle">@ATOM_BOMB_BD_bot</div>
+  </div>
+ </div>
+ <div>
+  <button class="topbtn" onclick="show('profile')">⚙</button>
+  <button class="topbtn" onclick="alert('Notifications coming soon')">♧</button>
+ </div>
 </header>
-<div class="card">
-<p>WELCOME</p>
-<h2 id="name">User</h2>
-<p>DEMO BALANCE</p>
-<div class="gold">৳ 0.00</div>
+
+<!-- HOME -->
+<section id="home" class="page active">
+
+ <div class="balance">
+  <div class="balance-title">✨ আপনার ব্যালেন্স</div>
+  <div class="amount">৳ 0.00</div>
+  <div class="stats">
+   <div class="stat"><strong>0.00</strong><span>মোট আয়</span></div>
+   <div class="stat"><strong>0</strong><span>রেফারেল</span></div>
+   <div class="stat"><strong>0</strong><span>টাস্ক</span></div>
+  </div>
+ </div>
+
+ <div class="section-title">⚡ Quick Access</div>
+ <div class="quick">
+  <div class="quick-card" onclick="show('wallet')">
+   <div class="iconbox cyan">💸</div>
+   <h3>উত্তোলন</h3><p>টাকা তুলুন</p>
+  </div>
+  <div class="quick-card" onclick="show('team')">
+   <div class="iconbox yellow">🏆</div>
+   <h3>লিডারবোর্ড</h3><p>সেরা সদস্য</p>
+  </div>
+  <div class="quick-card" onclick="alert('Official channel link will be added')">
+   <div class="iconbox blue">📢</div>
+   <h3>পেমেন্ট চ্যানেল</h3><p>আপডেট দেখুন</p>
+  </div>
+  <div class="quick-card" onclick="alert('Support link will be added')">
+   <div class="iconbox purple">🎧</div>
+   <h3>সাপোর্ট</h3><p>সাহায্য নিন</p>
+  </div>
+ </div>
+
+ <div class="adbox">
+  <div class="adhead">
+   <div class="play">▶</div>
+   <div><strong>Advertising Revenue</strong>
+    <p>Rewarded Ads Section</p></div>
+  </div>
+  <button class="gradient-btn" onclick="demo('বিজ্ঞাপন সিস্টেম এখনো যুক্ত হয়নি')">▶ Click Here</button>
+  <div style="display:flex;justify-content:space-between;margin-top:12px;font-size:12px">
+   <span>আজকের বিজ্ঞাপন লিমিট</span><b>0/50</b>
+  </div>
+  <div class="progress"><span></span></div>
+ </div>
+</section>
+
+<!-- TASKS -->
+<section id="tasks" class="page">
+ <div class="section-title">🎯 Earn With Tasks</div>
+ <div class="task-tabs">
+  <button class="pill active" onclick="tab(this,'telegram')">টেলিগ্রাম</button>
+  <button class="pill" onclick="tab(this,'micro')">মাইক্রো টাস্ক</button>
+  <button class="pill" onclick="tab(this,'social')">সোশ্যাল</button>
+  <button class="pill" onclick="tab(this,'history')">হিস্ট্রি</button>
+ </div>
+ <div id="telegram" class="task-list">
+  <div class="task-card">
+   <div class="task-top"><div class="task-logo">✈️</div>
+    <div><h3>টেলিগ্রাম গ্রুপে জয়েন</h3>
+    <p>গ্রুপে জয়েন হয়ে নির্ধারিত কাজ সম্পন্ন করুন</p>
+    <span class="reward">Reward: Demo</span></div>
+   </div>
+   <div class="progress"><span style="width:28%"></span></div>
+   <div class="task-actions">
+    <button class="join" onclick="demo('গ্রুপ লিংক পরে যুক্ত হবে')">✈ জয়েন করুন</button>
+    <button class="bonus" onclick="demo('Task verification backend প্রয়োজন')">🎁 যাচাই করুন</button>
+   </div>
+  </div>
+  <div class="task-card">
+   <div class="task-top"><div class="task-logo">📢</div>
+    <div><h3>চ্যানেলে জয়েন</h3>
+    <p>অফিশিয়াল চ্যানেলে যুক্ত হন</p>
+    <span class="reward">Reward: Demo</span></div>
+   </div>
+   <div class="task-actions">
+    <button class="join" onclick="demo('Channel link will be added')">জয়েন করুন</button>
+    <button class="bonus" onclick="demo('Verification not connected')">যাচাই করুন</button>
+   </div>
+  </div>
+ </div>
+ <div id="micro" class="task-list" style="display:none">
+  <div class="task-card"><h3>📝 Micro Tasks</h3><p>নতুন কাজ শীঘ্রই যুক্ত হবে।</p></div>
+ </div>
+ <div id="social" class="task-list" style="display:none">
+  <div class="task-card"><h3>🌐 Social Tasks</h3><p>নতুন কাজ শীঘ্রই যুক্ত হবে।</p></div>
+ </div>
+ <div id="history" class="task-list" style="display:none">
+  <div class="task-card"><h3>📜 Task History</h3><p>এখনো কোনো কাজ সম্পন্ন হয়নি।</p></div>
+ </div>
+</section>
+
+<!-- TEAM -->
+<section id="team" class="page">
+ <div class="section-title">👥 Invite & Earn</div>
+ <div class="ref-hero">
+  <div style="font-size:45px">🎁</div>
+  <h3>প্রতিটি সফল রেফারেলে বোনাস</h3>
+  <div class="ref-number">৳ 0.00</div>
+  <small>Demo referral bonus</small>
+  <div class="ref-link" id="refLink">Telegram referral link will appear here</div>
+  <button class="gradient-btn" onclick="share()">↗ শেয়ার করুন</button>
+ </div>
+ <div class="quick" style="margin-top:18px">
+  <div class="quick-card"><h3>0</h3><p>মোট রেফারেল</p></div>
+  <div class="quick-card"><h3>৳0.00</h3><p>রেফারেল আয়</p></div>
+ </div>
+ <div class="section-title">👥 রেফারেল হিস্ট্রি</div>
+ <div class="card" style="text-align:center;color:#929db0;padding:40px">
+  👥<br>এখনো কোনো রেফারেল নেই
+ </div>
+</section>
+
+<!-- WALLET -->
+<section id="wallet" class="page">
+ <div class="section-title">💳 My Wallet</div>
+ <div class="balance">
+  <div class="balance-title">উত্তোলনযোগ্য ব্যালেন্স</div>
+  <div class="amount">৳ 0.00</div>
+  <div class="stats">
+   <div class="stat"><strong>0</strong><span>রেফারেল</span></div>
+   <div class="stat"><strong>৳50</strong><span>Demo Minimum</span></div>
+   <div class="stat"><strong>0</strong><span>পেন্ডিং</span></div>
+  </div>
+ </div>
+ <div class="wallet-step">
+  <div class="section-title">পেমেন্ট মেথড</div>
+  <div class="methods">
+   <div class="method selected" onclick="method(this)">💗<br>বিকাশ</div>
+   <div class="method" onclick="method(this)">🟠<br>নগদ</div>
+   <div class="method" onclick="method(this)">🚀<br>রকেট</div>
+   <div class="method" onclick="method(this)">💳<br>উপায়</div>
+   <div class="method" onclick="method(this)">🌐<br>অন্যান্য</div>
+  </div>
+  <div class="section-title">উত্তোলনের পরিমাণ</div>
+  <input type="number" placeholder="Amount (BDT)">
+  <div class="section-title">মোবাইল নম্বর</div>
+  <input type="tel" placeholder="01XXXXXXXXX">
+  <button class="gradient-btn" onclick="demo('Withdrawal backend এখনো যুক্ত হয়নি')">পরবর্তী ধাপ →</button>
+  <p style="font-size:12px;color:#8794a6">এটি ডেমো ফর্ম। প্রকৃত পেমেন্ট চালুর আগে নিরাপদ Backend প্রয়োজন।</p>
+ </div>
+ <div class="section-title">📜 উত্তোলন ইতিহাস</div>
+ <div class="card" style="text-align:center;color:#929db0">এখনো কোনো উত্তোলন নেই</div>
+</section>
+
+<!-- PROFILE -->
+<section id="profile" class="page">
+ <div class="profile-hero">
+  <div class="big-avatar">☢</div>
+  <h2 id="profileName">ATOM BOMB USER</h2>
+  <p id="profileId">Telegram Member</p>
+  <span>✓ Member</span>
+ </div>
+ <div class="quick" style="margin-top:16px">
+  <div class="quick-card"><h3>৳0.00</h3><p>ব্যালেন্স</p></div>
+  <div class="quick-card"><h3>৳0.00</h3><p>মোট আয়</p></div>
+  <div class="quick-card"><h3>0</h3><p>রেফারেল</p></div>
+  <div class="quick-card"><h3>0</h3><p>সম্পন্ন টাস্ক</p></div>
+ </div>
+ <div class="section-title">⚙ Account Information</div>
+ <div class="info"><b>ইউজারনেম</b><span id="userHandle">@unknown</span></div>
+ <div class="info"><b>ইউজার আইডি</b><span id="userId">Unavailable</span></div>
+ <div class="info"><b>প্ল্যাটফর্ম</b><span>ATOM BOMB</span></div>
+ <div class="info"><b>সাপোর্ট</b><span>Coming Soon</span></div>
+</section>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom">
+ <button class="active" onclick="show('home',this)"><b>⌂</b>হোম</button>
+ <button onclick="show('tasks',this)"><b>☷</b>টাস্ক</button>
+ <button onclick="show('team',this)"><b>♧</b>টিম</button>
+ <button onclick="show('wallet',this)"><b>▣</b>ওয়ালেট</button>
+ <button onclick="show('profile',this)"><b>♙</b>প্রোফাইল</button>
+</nav>
+
+<!-- WELCOME NOTICE -->
+<div class="modal" id="welcome">
+ <div class="modal-content">
+  <div class="modal-icon">📢</div>
+  <h2>ATOM BOMB ☢️</h2>
+  <h3>কাজ করুন আর ইনকাম করুন 🎁</h3>
+  <p>
+   🌸 আসসালামু আলাইকুম!<br><br>
+   ❤️ স্বাগতম আমাদের ATOM BOMB প্ল্যাটফর্মে।<br><br>
+   🎯 এখানে বিভিন্ন কাজের Demo Interface দেখতে পারবেন।<br>
+   💰 Reward ও Payment সুবিধা চালু হওয়ার আগে
+   সকল নিয়ম ও শর্ত জানানো হবে।<br><br>
+   📌 অনুগ্রহ করে সঠিক তথ্য ব্যবহার করুন।
+  </p>
+  <button class="gradient-btn" onclick="document.getElementById('welcome').style.display='none'">বুঝেছি ❤️</button>
+ </div>
 </div>
-<div class="card">
-<h3>🎯 Daily Tasks</h3>
-<button onclick="alert('Coming Soon')">VIEW TASKS</button>
-</div>
-<div class="card">
-<h3>🎬 Rewarded Ads</h3>
-<button onclick="alert('Coming Soon')">WATCH ADS</button>
-</div>
-<div class="card">
-<h3>👥 Referral</h3>
-<button onclick="alert('Coming Soon')">INVITE FRIENDS</button>
-</div>
-<div class="card">
-<h3>💳 Withdraw</h3>
-<button onclick="alert('Coming Soon')">WITHDRAW</button>
-</div>
+
 <script>
 const tg=window.Telegram.WebApp;
 tg.ready();
 tg.expand();
+
 const user=tg.initDataUnsafe?.user;
-if(user) document.getElementById('name').textContent=user.first_name;
+
+if(user){
+ let n=user.first_name||"User";
+ document.getElementById('topName').textContent=n;
+ document.getElementById('profileName').textContent=n;
+ document.getElementById('profileId').textContent="ID: "+user.id;
+ document.getElementById('userId').textContent=user.id;
+ document.getElementById('userHandle').textContent=user.username?"@"+user.username:"No username";
+}
+
+function show(id,btn){
+ document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.bottom button').forEach(x=>x.classList.remove('active'));
+ if(btn)btn.classList.add('active');
+ else {
+  const ids=['home','tasks','team','wallet','profile'];
+  document.querySelectorAll('.bottom button')[ids.indexOf(id)]?.classList.add('active');
+ }
+ window.scrollTo(0,0);
+}
+function tab(btn,id){
+ document.querySelectorAll('.task-list').forEach(x=>x.style.display='none');
+ document.getElementById(id).style.display='block';
+ document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
+ btn.classList.add('active');
+}
+function method(btn){
+ document.querySelectorAll('.method').forEach(x=>x.classList.remove('selected'));
+ btn.classList.add('selected');
+}
+function demo(message){
+ if(tg.showAlert)tg.showAlert(message);
+ else alert(message);
+}
+function share(){
+ const link=location.href;
+ if(tg.openTelegramLink){
+  tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent(link)+'&text='+encodeURIComponent('Join ATOM BOMB'));
+ }else{
+  navigator.clipboard?.writeText(link);
+  alert('Link copied');
+ }
+}
 </script>
 </body>
-</html>
+  </html>
 
