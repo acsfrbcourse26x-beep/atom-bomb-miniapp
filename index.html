@@ -1,1 +1,56 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATOM BOMB</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*{box-sizing:border-box}
+body{background:#080808;color:white;font-family:Arial;padding:20px}
+header{text-align:center;color:#f5c542;padding:20px}
+h1{font-size:30px}
+.card{background:#191919;border:1px solid #b58a30;border-radius:18px;padding:20px;margin:15px 0}
+.gold{color:#f5c542;font-size:28px;font-weight:bold}
+button{background:#e7bb49;color:#111;border:0;padding:15px;width:100%;border-radius:12px;font-weight:bold}
+p{color:#aaa}
+</style>
+</head>
+<body>
+<header>
+<h1>☢ ATOM BOMB</h1>
+<p>PREMIUM REWARD PLATFORM</p>
+</header>
+<div class="card">
+<p>WELCOME</p>
+<h2 id="name">User</h2>
+<p>DEMO BALANCE</p>
+<div class="gold">৳ 0.00</div>
+</div>
+<div class="card">
+<h3>🎯 Daily Tasks</h3>
+<button onclick="alert('Coming Soon')">VIEW TASKS</button>
+</div>
+<div class="card">
+<h3>🎬 Rewarded Ads</h3>
+<button onclick="alert('Coming Soon')">WATCH ADS</button>
+</div>
+<div class="card">
+<h3>👥 Referral</h3>
+<button onclick="alert('Coming Soon')">INVITE FRIENDS</button>
+</div>
+<div class="card">
+<h3>💳 Withdraw</h3>
+<button onclick="alert('Coming Soon')">WITHDRAW</button>
+</div>
+<script>
+const tg=window.Telegram.WebApp;
+tg.ready();
+tg.expand();
+const user=tg.initDataUnsafe?.user;
+if(user) document.getElementById('name').textContent=user.first_name;
+</script>
+</body>
+</html>
+
